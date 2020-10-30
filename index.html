@@ -1,13 +1,44 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Quiz app</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
-  </head>
-  <h1>Quiz app not yet created.</h1>
-  <body>
-    <script src="script.js"></script>
-  </body>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Quiz App</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet"
+    type="text/css" />
+  <link href="app.css" rel="stylesheet" type="text/css" />
+</head>
+<!--This is the intro-->
+<body>
+  <header>
+    <h1>The Seinfeld Quiz</h1>
+  </header>
+  <main>
+    <article class="intro">
+      <h2>Test your knowledge of the greatest show ever created!</h2>
+      <button>Start Quiz</button>
+    </article>
+<!--This will be the question and answer section-->
+    <article class="quiz-questions">
+      <div>
+        <h3>Question X of Y</h3>
+        <h2>What was George Costanza's father's name?</h2>
+        <div>
+
+        </div>
+      </div>
+    </article>
+<!--This will be the results section-->
+    <article class="quiz-results">
+      <h2>You finished!</h2>
+      <h2>Your scored X/Y</h2>
+      <button>Try Quiz Again</button>
+    </article>
+  </main>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.js" crossorigin="anonymous"></script>
+  <script src="app.js"></script>
+</body>
+
 </html>

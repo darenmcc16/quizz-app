@@ -1,0 +1,34 @@
+/* Your styles should be mobile-first and responsive */
+
+/** 
+  * If you are unclear on how to utilize a mobile-first, responsive technique to write your CSS, here is an example: 
+  *
+  * https://github.com/andreacardybailey/responsive_example/blob/master/styles/responsive-base.css 
+  *
+*/
+
+body{
+  background-image: url("images/seinfeld-background.jpg");
+  height: auto;
+}
+
+h1{
+  text-align: center;
+  font-size: 75px;
+  color: yellow;
+}
+
+.intro{
+  text-align: center;
+  color: white;
+}
+
+.quiz-questions{
+  text-align: center;
+  color: white;
+}
+
+.quiz-results{
+  text-align: center;
+  color: white;
+}
