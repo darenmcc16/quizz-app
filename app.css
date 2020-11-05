@@ -7,6 +7,8 @@
   *
 */
 
+/*regular styling*/
+
 body{
   background-image: url("images/seinfeld-background.jpg");
   height: auto;
@@ -16,19 +18,34 @@ h1{
   text-align: center;
   font-size: 75px;
   color: yellow;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-.intro{
-  text-align: center;
-  color: white;
+h2{
+  color: yellow;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.quiz-questions{
+main {
   text-align: center;
-  color: white;
+  
 }
 
-.quiz-results{
-  text-align: center;
-  color: white;
+.start-quiz{
+  padding: 10px 10px 10px 10px;
+  margin-left: 20px
+}
+
+.answer-formatting{
+  margin-left: auto;
+  color: yellow;
+}
+
+.submit-feedback{
+  margin-left: auto;
+  margin-top: 25px;
+}
+
+.hide{
+  color: yellow;
 }
