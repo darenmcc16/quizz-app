@@ -31,14 +31,35 @@ main {
   
 }
 
+p{
+  color: yellow;
+  font-size: 20px;
+}
+
 .start-quiz{
   padding: 10px 10px 10px 10px;
   margin-left: 20px
 }
 
+.js-answer-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  vertical-align: middle;
+  width: 30%;
+  margin: 10px auto;
+  text-align: left;
+  border: 1px solid black;
+  float: inline-end;
+}
+
 .answer-formatting{
-  margin-left: auto;
-  color: yellow;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: red;
+  font-weight: bold;
 }
 
 .submit-feedback{
@@ -49,3 +70,4 @@ main {
 .hide{
   color: yellow;
 }
+
