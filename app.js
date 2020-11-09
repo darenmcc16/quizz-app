@@ -16,7 +16,7 @@ const store = {
         'Emmit'
       ],
       correctAnswer: 'Frank',
-      button: ['Submit', 'Next Question'],
+      button: ['Submit', 'Next'],
       feedback: ['Correct!', 'The correct answer was Frank'],
       state: 'question',
     },
@@ -29,7 +29,7 @@ const store = {
         'L.A.'
       ],
       correctAnswer: 'New York',
-      button: ['Submit', 'Next Question'],
+      button: ['Submit', 'Next'],
       feedback: ['Correct!', 'The correct answer was New York'],
       state: 'question',
     },
@@ -42,7 +42,7 @@ const store = {
         'Allen Robinson'
       ],
       correctAnswer: 'Art Vandelay',
-      button: ['Submit', 'Next Question'],
+      button: ['Submit', 'Next'],
       feedback: ['Correct!', 'The correct answer was Art Vandelay'],
       state: 'question',
     },
@@ -55,7 +55,7 @@ const store = {
         'Water'
       ],
       correctAnswer: 'Lots of stuff',
-      button: ['Submit', 'Next Question'],
+      button: ['Submit', 'Next'],
       feedback: ['Correct!', 'The correct answer was Lots of Stuff'],
       state: 'question',
     },
@@ -68,7 +68,7 @@ const store = {
         'The Merv Griffen Show'
       ],
       correctAnswer: 'The Merv Griffen Show',
-      button: ['Submit', 'Next Question'],
+      button: ['Submit', 'Next'],
       feedback: ['Correct!', 'The correct answer was The Merv Griffen Show'],
       state: 'question',
     },
@@ -82,36 +82,48 @@ const store = {
   hasAnswered: false,
   quizStarted: false,
   questionNumber: 0,
-  score: 0
+  score: 0,
 };
+let counter = 1;
+
+function increaseQuestionCounter(){
+  counter ++;
+  $('.question-number').text(counter);
+}
 
 function slideStartTemplete(selection) {
   return `
   <h2 class=js-form-title>${selection.question}</h2>
-  <button class="start-quiz" type="button">${selection.button}</button>`;
+  <button class="start-quiz" type="button">${selection.button}</button>
+  <p class="hide"></p>`;
 }
 
 function slideTemplete(selection) {
   return `
   <form id="js-form-answer">
+    <p class="question-number">Question: ${counter}/5</p>
+    <p class="current-score"></p>
     <h2 class=js-form-title>${selection.question}</h2>
-    <div>
+    <div class="js-answer-wrapper">
+    <div class="answer-formatting">
       <input type="radio" name="answers" value="${selection.answers[0]}" required>
       ${selection.answers[0]}
     </div>
-    <div>
+    <div class="answer-formatting">
       <input type="radio" name="answers" value="${selection.answers[1]}" required>
       ${selection.answers[1]}
     </div>
-    <div>
+    <div class="answer-formatting">
       <input type="radio" name="answers"value="${selection.answers[2]}" required>
       ${selection.answers[2]}
     </div>
-    <div>
+    <div class="answer-formatting">
       <input type="radio" name="answers" value="${selection.answers[3]}" required>
       ${selection.answers[3]}
     </div>
-    <button class="submit-feedback" type="button">${selection.button}</button>
+    </div>
+    <button class="submit feedback" type="button">${selection.button[0]}</button>
+    <p class="hide"></P>
   </form>
 `;
 }
@@ -120,7 +132,16 @@ function slideFinishTemplete(selection) {
   return `
   <h2 class="js-form-title">${selection.question}</h2>
   <button class="submit-restart" type="button">${selection.button}</button>
-  <p>You answered ${score} out of 5.</p>`
+  <p class='finished-feedback'>You answered ${store.score} correct out of 5.</p>
+  `
+}
+
+function updateQuestionAndScore(){
+  let board = $(`
+  <p>Question: <span class="queston-number">${counter}</span>/5</p>
+  <p>Score: <span class="score">${score}</span></p>
+  `);
+  console.log(board);
 }
 
 function createTemplete(selection) {
@@ -159,11 +180,16 @@ function resetQuiz() {
   return store.questionNumber = 1;
 }
 
-function questionCorrect(selection) {
-  if (selection.answers === store.correctAnswer) {
-    return "Correct!";
+function questionCorrect(entry, correctAnswer) {
+  if (entry === correctAnswer) {
+    return true;
+    console.log('correct');
+  }
+  else{
+    return false;
   }
 }
+
 
 function render() {
   const slide = store.slides[currentQuestion()];
@@ -181,35 +207,47 @@ function startQuiz() {
   });
 }
 
-function nextQuestion() {
-  $('main').on('click', '.submit-feedback', event => {
-    event.preventDefault();
-    console.log('submit-feedback');
-    let userAnswer = $("input[name='answers']:checked").val();
-    console.log(userAnswer);
-    let slide = store.slides[currentQuestion()];
-    updatedCurrentQuestion();
-    questionCorrect();
-    render();
-  });
-}
-
 function restartQuiz() {
   $('main').on('click', '.submit-restart', event => {
     event.preventDefault();
     console.log('submit-restart');
+    counter = 1;
     resetScore();
     resetQuiz();
     render();
   });
 }
 
-function toggleHasAnswered(slide, selection) {
+function givePositiveFeedback(slide){
+  $('.hide').text(slide.feedback[0]);
+  $('.current-score').text("You answered " + store.score + " correct");
+}
+
+function giveNegativeFeedback(slide){
+  $('.hide').text(slide.feedback[1]);
+  $('.current-score').text("You answered " + store.score + " correct");
+}
+
+function giveQuestionFeedback(slide, selection){
+  console.log(slide);
+  console.log(selection);
+  if (questionCorrect(selection, slide.correctAnswer)){
+    currentScore();
+    givePositiveFeedback(slide);
+  }
+  else{
+    giveNegativeFeedback(slide);
+  }
+}
+
+function toggleHasAnswered() {
   store.hasAnswered = !store.hasAnswered;
 }
 
 function checkIfAnswered(slide, selection) {
+  console.log(selection);
   if (!store.hasAnswered) {
+    giveQuestionFeedback(slide, selection);
     toggleHasAnswered();
   } else {
     toggleHasAnswered();
@@ -218,26 +256,47 @@ function checkIfAnswered(slide, selection) {
 }
 
 function editSubmitClass(slide) {
-  $('feedback').addClass('next');
-  $('feedback').text(slide.button[1]);
-  $('feedback').removeClass('feedback');
+  $('.submit').addClass('next');
+  $('.submit').text(slide.button[1]);
+  $('.submit').removeClass('submit');
 }
 
 function getFeedback() {
-  $('main').on('click', '.feedback', event => {
+  $('main').on('click', '.submit', event => {
     event.preventDefault();
     let slide = store.slides[currentQuestion()];
+    //let selection = $(this).closest("form").find('input[name="answers"]:checked').val();
     let selection = $('input[name="answers"]:checked').val();
+    console.log(selection);
     checkIfAnswered(slide, selection);
+    console.log(store.score);
     editSubmitClass(slide);
+    console.log('button edit');
     toggleHasAnswered();
+    console.log('has-answered')
   });
 }
 
 function editNextButtonClass(slide) {
-  $('feedback').addclass('next');
-  $('feedback').text(slide.button[0]);
-  $('feedback').removeClass('feedback');
+  $('.next').addClass('submit');
+  $('.next').text(slide.button[0]);
+  $('.next').removeClass('next');
+}
+
+function nextQuestion() {
+  //need to change submit-feedback trigger
+  $('main').on('click', '.next', event => {
+    event.preventDefault();
+    console.log('submit');
+    let userAnswer = $("input[name='answers']:checked").val();
+    console.log(userAnswer);
+    let slide = store.slides[currentQuestion()];
+    updatedCurrentQuestion();
+    editNextButtonClass(slide);
+    console.log('next button class');
+    increaseQuestionCounter();
+    render();
+  });
 }
 
 function main() {
@@ -249,6 +308,7 @@ function main() {
 }
 
 $(main);
+
 
 
 
