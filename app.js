@@ -103,27 +103,35 @@ function slideTemplete(selection) {
   <form id="js-form-answer">
     <p class="question-number">Question: ${counter}/5</p>
     <p class="current-score"></p>
+    <p class="hide"></p>
     <h2 class=js-form-title>${selection.question}</h2>
     <div class="js-answer-wrapper">
     <div class="answer-formatting">
+      <label>
       <input type="radio" name="answers" value="${selection.answers[0]}" required>
-      ${selection.answers[0]}
+      <span>${selection.answers[0]}</span>
+      </label>
     </div>
     <div class="answer-formatting">
+      <label>
       <input type="radio" name="answers" value="${selection.answers[1]}" required>
-      ${selection.answers[1]}
+      <span>${selection.answers[1]}</span>
+      </label>
     </div>
     <div class="answer-formatting">
+      <label>
       <input type="radio" name="answers"value="${selection.answers[2]}" required>
-      ${selection.answers[2]}
+      <span>${selection.answers[2]}</span>
+      </label>
     </div>
     <div class="answer-formatting">
+      <label>
       <input type="radio" name="answers" value="${selection.answers[3]}" required>
-      ${selection.answers[3]}
+      <span>${selection.answers[3]}</span>
+      </label>
     </div>
     </div>
-    <button class="submit feedback" type="button">${selection.button[0]}</button>
-    <p class="hide"></P>
+    <button class="submit feedback" type="submit">${selection.button[0]}</button>
   </form>
 `;
 }
@@ -183,7 +191,6 @@ function resetQuiz() {
 function questionCorrect(entry, correctAnswer) {
   if (entry === correctAnswer) {
     return true;
-    console.log('correct');
   }
   else{
     return false;
@@ -240,6 +247,13 @@ function giveQuestionFeedback(slide, selection){
   }
 }
 
+  // $('.submit').on('click', function(){
+  //   $(this).prop("disabled",true);
+  //   console.log('disable');
+  // });
+
+
+
 function toggleHasAnswered() {
   store.hasAnswered = !store.hasAnswered;
 }
@@ -264,8 +278,13 @@ function editSubmitClass(slide) {
 function getFeedback() {
   $('main').on('click', '.submit', event => {
     event.preventDefault();
+    let radios = $('input:radio[name=answers]');
+    if (radios.filter(':checked').length === 0) {
+    alert('Please select an answer.');
+    return;
+  }
+    else{
     let slide = store.slides[currentQuestion()];
-    //let selection = $(this).closest("form").find('input[name="answers"]:checked').val();
     let selection = $('input[name="answers"]:checked').val();
     console.log(selection);
     checkIfAnswered(slide, selection);
@@ -273,7 +292,8 @@ function getFeedback() {
     editSubmitClass(slide);
     console.log('button edit');
     toggleHasAnswered();
-    console.log('has-answered')
+    console.log('has-answered');
+    }
   });
 }
 
